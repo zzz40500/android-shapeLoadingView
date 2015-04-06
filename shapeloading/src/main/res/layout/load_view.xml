@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+
+        android:id="@+id/indication"
+        android:layout_width="23dp"
+        android:src="@drawable/shadow"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="82dp"
+        android:layout_height="3dp" />
+
+    <com.mingle.widget.ShapeLoadingView
+        android:id="@+id/shapeLoadingView"
+        android:layout_width="27dp"
+        android:layout_marginTop="2dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="27dp" />
+
+
+</RelativeLayout>
