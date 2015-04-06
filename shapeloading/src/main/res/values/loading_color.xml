@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="triangle">#689f38</color>
-    <color name="circle">#4d73ff</color>
-    <color name="rect">#e00032</color>
+    <color name="triangle">#72d572</color>
+    <color name="circle">#738ffe</color>
+    <color name="rect">#e84e40</color>
     <color name="view_bg">#00000000</color>
     <color name="shadow">#bdbdbd</color>
 

@@ -73,7 +73,7 @@ public class ShapeLoadingView extends View {
             case SHAPE_TRIANGLE:
 
                 if (mIsLoading) {
-                    mAnimPercent += 0.07111113;
+                    mAnimPercent += 0.1611113;
                     // triangle to circle
                     Path path = new Path();
                     path.moveTo(relativeXFromView(0.5f), relativeYFromView(0f));
