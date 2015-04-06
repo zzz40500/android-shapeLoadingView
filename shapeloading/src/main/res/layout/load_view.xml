@@ -11,6 +11,17 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="82dp"
         android:layout_height="3dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/promptTV"
+        android:textColor="#757575"
+        android:minWidth="44dp"
+        android:textSize="16sp"
+        android:layout_below="@+id/indication"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:text="text"
+        android:layout_height="wrap_content" />
 
     <com.mingle.widget.ShapeLoadingView
         android:id="@+id/shapeLoadingView"

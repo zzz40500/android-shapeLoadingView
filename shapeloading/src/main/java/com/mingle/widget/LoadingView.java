@@ -5,17 +5,21 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mingle.shapeloading.R;
+
 
 
 /**
@@ -28,8 +32,13 @@ public class LoadingView  extends FrameLayout {
 
     private ImageView indicationIm;
 
+    private TextView loadTextView;
 
-    private   static  final int ANIMATION_DURATION=600;
+
+    private   static  final int ANIMATION_DURATION=500;
+
+    private String loadText;
+
 
     private     float mDistance =200;
     public LoadingView(Context context) {
@@ -37,21 +46,38 @@ public class LoadingView  extends FrameLayout {
     }
 
     public LoadingView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        super(context, attrs,0);
+        init(context,attrs);
+
     }
+
+    private void init(Context context,AttributeSet attrs) {
+
+        TypedArray typedArray= context
+                .obtainStyledAttributes(attrs, R.styleable.LoadingView);
+        loadText=  typedArray.getString(R.styleable.LoadingView_loadingText);
+
+        typedArray.recycle();
+    }
+
 
     public LoadingView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(context,attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public LoadingView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        init(context,attrs);
     }
     public  int dip2px( float dipValue){
         final float scale = getContext().getResources().getDisplayMetrics().density;
         return (int)(dipValue * scale + 0.5f);
     }
+
+
+
 
     @Override
     protected void onFinishInflate() {
@@ -62,16 +88,16 @@ public class LoadingView  extends FrameLayout {
 
         mDistance =dip2px(54f);
 
-        LayoutParams layoutParams=new LayoutParams(dip2px(44), dip2px(90));
-
+        LayoutParams layoutParams=new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         layoutParams.gravity= Gravity.CENTER;
 
         shapeLoadingView= (ShapeLoadingView) view.findViewById(R.id.shapeLoadingView);
 
         indicationIm= (ImageView) view.findViewById(R.id.indication);
+        loadTextView= (TextView) view.findViewById(R.id.promptTV);
 
-
+        setLoadingText(loadText);
 
         addView(view,layoutParams);
 
@@ -83,6 +109,10 @@ public class LoadingView  extends FrameLayout {
         },900);
 
 
+    }
+
+    public void setLoadingText(CharSequence loadingText){
+        loadTextView.setText(loadingText);
     }
     /**
      * 上抛
