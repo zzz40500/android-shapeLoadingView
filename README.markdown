@@ -10,6 +10,7 @@
 
 #地址:#
 [github 直达](https://github.com/zzz40500/android-shapeLoadingView)
+
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Shape%20Loading%20View-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1897)
 
 #usage#
