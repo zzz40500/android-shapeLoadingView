@@ -1,8 +1,5 @@
 package com.mingle.widget;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -19,7 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mingle.shapeloading.R;
-
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
 
 
 /**
@@ -77,14 +76,11 @@ public class LoadingView  extends FrameLayout {
     }
 
 
-
-
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-
-      View view=  LayoutInflater.from(getContext()).inflate(R.layout.load_view,null);
+       View view=  LayoutInflater.from(getContext()).inflate(R.layout.load_view,null);
 
         mDistance =dip2px(54f);
 
@@ -145,8 +141,8 @@ public class LoadingView  extends FrameLayout {
 
         objectAnimator.setDuration(ANIMATION_DURATION);
         objectAnimator1.setDuration(ANIMATION_DURATION);
-        objectAnimator.setInterpolator(new DecelerateInterpolator());
-        objectAnimator1.setInterpolator(new DecelerateInterpolator());
+        objectAnimator.setInterpolator(new DecelerateInterpolator(factor));
+        objectAnimator1.setInterpolator(new DecelerateInterpolator(factor));
         AnimatorSet animatorSet=new AnimatorSet();
         animatorSet.setDuration(ANIMATION_DURATION);
         animatorSet.playTogether(objectAnimator,objectAnimator1,scaleIndication);
@@ -180,6 +176,8 @@ public class LoadingView  extends FrameLayout {
 
     }
 
+    public float factor =1.2f;
+
     /**
      * 下落
      */
@@ -190,7 +188,7 @@ public class LoadingView  extends FrameLayout {
 
 
         objectAnimator.setDuration(ANIMATION_DURATION);
-        objectAnimator.setInterpolator(new AccelerateInterpolator());
+        objectAnimator.setInterpolator(new AccelerateInterpolator(factor));
         AnimatorSet animatorSet=new AnimatorSet();
         animatorSet.setDuration(ANIMATION_DURATION);
         animatorSet.playTogether(objectAnimator,scaleIndication);

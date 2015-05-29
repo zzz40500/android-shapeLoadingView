@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.mingle"
-        minSdkVersion 14
+        minSdkVersion 9
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"

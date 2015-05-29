@@ -20,7 +20,6 @@
         android:layout_below="@+id/indication"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="18dp"
-        android:text="text"
         android:layout_height="wrap_content" />
 
     <com.mingle.widget.ShapeLoadingView

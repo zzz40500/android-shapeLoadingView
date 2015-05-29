@@ -5,10 +5,10 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 9
         targetSdkVersion 21
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.1"
     }
     buildTypes {
         release {
@@ -18,7 +18,24 @@ android {
     }
 }
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.2.10'
+    }
+}
+apply plugin: 'bintray-release'
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.nineoldandroids:library:2.4.0'
+}
+
+publish {
+    groupId = 'com.mingle.widget'
+    artifactId = 'shapeLoadingView'
+    publishVersion = '1.0.1'
+    description='Loading view with pretty animation.'
+    website = 'https://github.com/zzz40500/android-shapeLoadingView'
 }

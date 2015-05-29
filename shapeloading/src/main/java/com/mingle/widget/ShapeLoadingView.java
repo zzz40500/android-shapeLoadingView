@@ -100,7 +100,6 @@ public class ShapeLoadingView extends View {
 
                     invalidate();
 
-
                 } else {
                     Path path = new Path();
                     mPaint.setColor(getResources().getColor(R.color.triangle));
@@ -121,10 +120,7 @@ public class ShapeLoadingView extends View {
 
 
                 if (mIsLoading) {
-
-
                     float magicNumber = mMagicNumber + mAnimPercent;
-
                     mAnimPercent += 0.12;
                     if (magicNumber + mAnimPercent >= 1.9f) {
                         mShape = Shape.SHAPE_RECT;
