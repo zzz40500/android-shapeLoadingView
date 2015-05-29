@@ -33,7 +33,7 @@ dependencies {
 }
 
 publish {
-    groupId = 'com.mingle.widget'
+    groupId = 'com.mingle.zzz40500'
     artifactId = 'shapeLoadingView'
     publishVersion = '1.0.1'
     description='Loading view with pretty animation.'
