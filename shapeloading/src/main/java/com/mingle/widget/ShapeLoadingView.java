@@ -17,8 +17,8 @@ import com.mingle.shapeloading.R;
 public class ShapeLoadingView extends View {
 
 
-    private float genhao3 = 1.7320508075689f;
-
+    private static final float genhao3 = 1.7320508075689f;
+    private static  final  float mTriangle2Circle =0.25555555f;
 
     private Shape mShape = Shape.SHAPE_CIRCLE;
 
@@ -64,11 +64,15 @@ public class ShapeLoadingView extends View {
     private float mControlY = 0;
 
     private float mAnimPercent;
-    private float triangle2Circle=0.25555555f;
+
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        if(getVisibility()==GONE){
+            return;
+        }
         switch (mShape) {
             case SHAPE_TRIANGLE:
 
@@ -83,16 +87,16 @@ public class ShapeLoadingView extends View {
                         mIsLoading = false;
                         mAnimPercent=1;
                     }
-                    float controlX = mControlX - relativeXFromView(mAnimPercent*triangle2Circle)
+                    float controlX = mControlX - relativeXFromView(mAnimPercent* mTriangle2Circle)
                             * genhao3;
 
-                    float controlY = mControlY - relativeYFromView(mAnimPercent*triangle2Circle);
+                    float controlY = mControlY - relativeYFromView(mAnimPercent* mTriangle2Circle);
 
 
                     path.quadTo(relativeXFromView(1) - controlX, controlY, relativeXFromView(0.5f + genhao3 / 4), relativeYFromView(0.75f));
 
 
-                    path.quadTo(relativeXFromView(0.5f), relativeYFromView(0.75f + 2 * mAnimPercent*triangle2Circle), relativeXFromView(0.5f - genhao3 / 4), relativeYFromView(0.75f));
+                    path.quadTo(relativeXFromView(0.5f), relativeYFromView(0.75f + 2 * mAnimPercent* mTriangle2Circle), relativeXFromView(0.5f - genhao3 / 4), relativeYFromView(0.75f));
 
                     path.quadTo(controlX, controlY, relativeXFromView(0.5f), relativeYFromView(0f));
                     path.close();
@@ -250,6 +254,15 @@ public class ShapeLoadingView extends View {
         SHAPE_TRIANGLE, SHAPE_RECT, SHAPE_CIRCLE
     }
 
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+
+        if(visibility==VISIBLE){
+            invalidate();
+        }
+    }
 
     public Shape getShape() {
         return mShape;

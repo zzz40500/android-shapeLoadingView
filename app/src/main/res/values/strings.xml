@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_view_demo">ViewDemoActivity</string>
+    <string name="title_activity_dialog_demo">DialogDemoActivity</string>
 </resources>

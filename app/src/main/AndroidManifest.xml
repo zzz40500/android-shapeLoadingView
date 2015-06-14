@@ -16,6 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ViewDemoActivity"
+            android:label="@string/title_activity_view_demo" >
+        </activity>
+        <activity
+            android:name=".DialogDemoActivity"
+            android:label="@string/title_activity_dialog_demo" >
+        </activity>
     </application>
 
 </manifest>
