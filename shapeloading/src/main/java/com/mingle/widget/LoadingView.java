@@ -29,7 +29,7 @@ public class LoadingView extends FrameLayout {
 
     private static final int ANIMATION_DURATION = 500;
 
-    private static  float mDistance = 200;
+    private static float mDistance = 200;
 
     private ShapeLoadingView mShapeLoadingView;
 
@@ -103,14 +103,50 @@ public class LoadingView extends FrameLayout {
 
         addView(view, layoutParams);
 
-        this.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                freeFall();
+
+        startLoading(900);
+    }
+
+
+    private AnimatorSet mAnimatorSet = null;
+
+    private Runnable mFreeFallRunnable = new Runnable() {
+        @Override
+        public void run() {
+            freeFall();
+        }
+    };
+
+    private void startLoading(long delay) {
+        if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
+            return;
+        }
+        this.removeCallbacks(mFreeFallRunnable);
+        if (delay > 0) {
+            this.postDelayed(mFreeFallRunnable, delay);
+        } else {
+            this.post(mFreeFallRunnable);
+        }
+    }
+
+    private void stopLoading() {
+        if (mAnimatorSet != null) {
+            if (mAnimatorSet.isRunning()) {
+                mAnimatorSet.cancel();
             }
-        }, 900);
+            mAnimatorSet = null;
+        }
+        this.removeCallbacks(mFreeFallRunnable);
+    }
 
-
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == View.VISIBLE) {
+            startLoading(200);
+        } else {
+            stopLoading();
+        }
     }
 
     public void setLoadingText(CharSequence loadingText) {

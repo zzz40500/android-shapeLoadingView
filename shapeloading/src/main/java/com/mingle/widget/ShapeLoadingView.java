@@ -8,8 +8,12 @@ import android.graphics.Path;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 
 import com.mingle.shapeloading.R;
+import com.nineoldandroids.animation.ArgbEvaluator;
+
 
 /**
  * Created by zzz40500 on 15/4/4.
@@ -21,6 +25,12 @@ public class ShapeLoadingView extends View {
     private static  final  float mTriangle2Circle =0.25555555f;
 
     private Shape mShape = Shape.SHAPE_CIRCLE;
+    private Interpolator mInterpolator=new DecelerateInterpolator();
+    private ArgbEvaluator mArgbEvaluator=new ArgbEvaluator();
+
+    private int mTriangleColor ;
+    private int mCircleColor  ;
+    private int mRectColor ;
 
     /**
      * 用赛贝尔曲线画圆
@@ -53,16 +63,15 @@ public class ShapeLoadingView extends View {
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         setBackgroundColor(getResources().getColor(R.color.view_bg));
+          mTriangleColor = getResources().getColor(R.color.triangle);
+          mCircleColor = getResources().getColor(R.color.circle);
+          mRectColor = getResources().getColor(R.color.triangle);
     }
 
     public boolean mIsLoading = false;
-
-
     private Paint mPaint;
-
     private float mControlX = 0;
     private float mControlY = 0;
-
     private float mAnimPercent;
 
 
@@ -79,6 +88,8 @@ public class ShapeLoadingView extends View {
 
                 if (mIsLoading) {
                     mAnimPercent += 0.1611113;
+                    int color= (int) mArgbEvaluator.evaluate(mAnimPercent,mTriangleColor,mCircleColor);
+                    mPaint.setColor(color);
                     // triangle to circle
                     Path path = new Path();
                     path.moveTo(relativeXFromView(0.5f), relativeYFromView(0f));
@@ -90,15 +101,9 @@ public class ShapeLoadingView extends View {
                     }
                     float controlX = mControlX - relativeXFromView(mAnimPercent* mTriangle2Circle)
                             * genhao3;
-
                     float controlY = mControlY - relativeYFromView(mAnimPercent* mTriangle2Circle);
-
-
                     path.quadTo(relativeXFromView(1) - controlX, controlY, relativeXFromView(0.5f + genhao3 / 4), relativeYFromView(0.75f));
-
-
                     path.quadTo(relativeXFromView(0.5f), relativeYFromView(0.75f + 2 * mAnimPercent* mTriangle2Circle), relativeXFromView(0.5f - genhao3 / 4), relativeYFromView(0.75f));
-
                     path.quadTo(controlX, controlY, relativeXFromView(0.5f), relativeYFromView(0f));
                     path.close();
                     canvas.drawPath(path, mPaint);
@@ -108,11 +113,9 @@ public class ShapeLoadingView extends View {
                 } else {
                     Path path = new Path();
                     mPaint.setColor(getResources().getColor(R.color.triangle));
-
                     path.moveTo(relativeXFromView(0.5f), relativeYFromView(0f));
                     path.lineTo(relativeXFromView(1), relativeYFromView(genhao3 / 2f));
                     path.lineTo(relativeXFromView(0), relativeYFromView(genhao3/2f));
-
                     mControlX = relativeXFromView(0.5f - genhao3 / 8.0f);
                     mControlY = relativeYFromView(3 / 8.0f);
                     mAnimPercent = 0;
@@ -131,6 +134,8 @@ public class ShapeLoadingView extends View {
                         mShape = Shape.SHAPE_RECT;
                         mIsLoading = false;
                     }
+                    int color= (int) mArgbEvaluator.evaluate(mAnimPercent,mCircleColor,mRectColor);
+                    mPaint.setColor(color);
 
                     Path path = new Path();
 
@@ -196,6 +201,8 @@ public class ShapeLoadingView extends View {
                         mIsLoading = false;
                         mAnimPercent = 1;
                     }
+                    int color= (int) mArgbEvaluator.evaluate(mAnimPercent,mRectColor,mTriangleColor);
+                    mPaint.setColor(color);
                     Path path = new Path();
                     path.moveTo(relativeXFromView(0.5f * mAnimPercent), 0);
                     path.lineTo(relativeYFromView(1 - 0.5f * mAnimPercent), 0);
