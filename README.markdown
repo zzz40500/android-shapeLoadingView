@@ -12,7 +12,19 @@
 [github 直达](https://github.com/zzz40500/android-shapeLoadingView)
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Shape%20Loading%20View-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1897)
-
+###gradle      
+/build.gradle
+~~~
+repositories {
+    maven {
+        url "https://jitpack.io"
+    }
+}
+~~~
+/app/build.gradle
+~~~
+compile 'com.github.zzz40500:android-shapeLoadingView:1.0.3'
+~~~
 #usage#
 
 布局上
