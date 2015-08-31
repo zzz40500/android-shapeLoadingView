@@ -23,7 +23,9 @@ repositories {
 ~~~
 /app/build.gradle
 ~~~
-compile 'com.github.zzz40500:android-shapeLoadingView:1.0.3'
+dependencies {
+	        compile 'com.github.zzz40500:android-shapeLoadingView:1.0.3.2'
+	}
 ~~~
 #usage#
 
