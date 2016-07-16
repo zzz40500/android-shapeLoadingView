@@ -39,7 +39,8 @@ public class LoadingView extends FrameLayout {
     private int mTextAppearance;
 
     private String mLoadText;
-
+    private AnimatorSet mUpAnimatorSet;
+    private AnimatorSet mDownAnimatorSet;
 
     public LoadingView(Context context) {
         super(context);
@@ -118,7 +119,7 @@ public class LoadingView extends FrameLayout {
     };
 
     private void startLoading(long delay) {
-        if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
+        if (mDownAnimatorSet != null && mDownAnimatorSet.isRunning()) {
             return;
         }
         this.removeCallbacks(mFreeFallRunnable);
@@ -129,12 +130,36 @@ public class LoadingView extends FrameLayout {
         }
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        stopLoading();
+    }
+
     private void stopLoading() {
         if (mAnimatorSet != null) {
             if (mAnimatorSet.isRunning()) {
                 mAnimatorSet.cancel();
             }
             mAnimatorSet = null;
+        }
+        if (mUpAnimatorSet != null) {
+            if (mUpAnimatorSet.isRunning()) {
+                mUpAnimatorSet.cancel();
+            }
+            mUpAnimatorSet.removeAllListeners();
+            for (Animator animator : mUpAnimatorSet.getChildAnimations()) {
+                animator.removeAllListeners();
+            }
+        }
+        if (mDownAnimatorSet != null) {
+            if (mDownAnimatorSet.isRunning()) {
+                mDownAnimatorSet.cancel();
+            }
+            mDownAnimatorSet.removeAllListeners();
+            for (Animator animator : mDownAnimatorSet.getChildAnimations()) {
+                animator.removeAllListeners();
+            }
         }
         this.removeCallbacks(mFreeFallRunnable);
     }
@@ -194,12 +219,12 @@ public class LoadingView extends FrameLayout {
         objectAnimator1.setDuration(ANIMATION_DURATION);
         objectAnimator.setInterpolator(new DecelerateInterpolator(factor));
         objectAnimator1.setInterpolator(new DecelerateInterpolator(factor));
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(ANIMATION_DURATION);
-        animatorSet.playTogether(objectAnimator, objectAnimator1, scaleIndication);
+        mUpAnimatorSet = new AnimatorSet();
+        mUpAnimatorSet.setDuration(ANIMATION_DURATION);
+        mUpAnimatorSet.playTogether(objectAnimator, objectAnimator1, scaleIndication);
 
 
-        animatorSet.addListener(new Animator.AnimatorListener() {
+        mUpAnimatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
 
@@ -222,7 +247,7 @@ public class LoadingView extends FrameLayout {
 
             }
         });
-        animatorSet.start();
+        mUpAnimatorSet.start();
 
 
     }
@@ -240,10 +265,10 @@ public class LoadingView extends FrameLayout {
 
         objectAnimator.setDuration(ANIMATION_DURATION);
         objectAnimator.setInterpolator(new AccelerateInterpolator(factor));
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(ANIMATION_DURATION);
-        animatorSet.playTogether(objectAnimator, scaleIndication);
-        animatorSet.addListener(new Animator.AnimatorListener() {
+        mDownAnimatorSet = new AnimatorSet();
+        mDownAnimatorSet.setDuration(ANIMATION_DURATION);
+        mDownAnimatorSet.playTogether(objectAnimator, scaleIndication);
+        mDownAnimatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
 
@@ -267,7 +292,7 @@ public class LoadingView extends FrameLayout {
 
             }
         });
-        animatorSet.start();
+        mDownAnimatorSet.start();
 
 
     }
