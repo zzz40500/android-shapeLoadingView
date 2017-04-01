@@ -191,62 +191,59 @@ public class LoadingView extends FrameLayout {
      */
     public void upThrow() {
 
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mShapeLoadingView, "translationY", mDistance, 0);
-        ObjectAnimator scaleIndication = ObjectAnimator.ofFloat(mIndicationIm, "scaleX", 0.2f, 1);
+        if (mUpAnimatorSet == null) {
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mShapeLoadingView, "translationY", mDistance, 0);
+            ObjectAnimator scaleIndication = ObjectAnimator.ofFloat(mIndicationIm, "scaleX", 0.2f, 1);
 
+            ObjectAnimator objectAnimator1 = null;
+            switch (mShapeLoadingView.getShape()) {
+                case SHAPE_RECT:
 
-        ObjectAnimator objectAnimator1 = null;
-        switch (mShapeLoadingView.getShape()) {
-            case SHAPE_RECT:
+                    objectAnimator1 = ObjectAnimator.ofFloat(mShapeLoadingView, "rotation", 0, -120);
 
+                    break;
+                case SHAPE_CIRCLE:
+                    objectAnimator1 = ObjectAnimator.ofFloat(mShapeLoadingView, "rotation", 0, 180);
 
-                objectAnimator1 = ObjectAnimator.ofFloat(mShapeLoadingView, "rotation", 0, -120);
+                    break;
+                case SHAPE_TRIANGLE:
 
-                break;
-            case SHAPE_CIRCLE:
-                objectAnimator1 = ObjectAnimator.ofFloat(mShapeLoadingView, "rotation", 0, 180);
+                    objectAnimator1 = ObjectAnimator.ofFloat(mShapeLoadingView, "rotation", 0, 180);
 
-                break;
-            case SHAPE_TRIANGLE:
+                    break;
+            }
 
-                objectAnimator1 = ObjectAnimator.ofFloat(mShapeLoadingView, "rotation", 0, 180);
+            objectAnimator.setDuration(ANIMATION_DURATION);
+            objectAnimator1.setDuration(ANIMATION_DURATION);
+            objectAnimator.setInterpolator(new DecelerateInterpolator(factor));
+            objectAnimator1.setInterpolator(new DecelerateInterpolator(factor));
+            mUpAnimatorSet = new AnimatorSet();
+            mUpAnimatorSet.setDuration(ANIMATION_DURATION);
+            mUpAnimatorSet.playTogether(objectAnimator, objectAnimator1, scaleIndication);
 
-                break;
+            mUpAnimatorSet.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    freeFall();
+
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
         }
-
-
-        objectAnimator.setDuration(ANIMATION_DURATION);
-        objectAnimator1.setDuration(ANIMATION_DURATION);
-        objectAnimator.setInterpolator(new DecelerateInterpolator(factor));
-        objectAnimator1.setInterpolator(new DecelerateInterpolator(factor));
-        mUpAnimatorSet = new AnimatorSet();
-        mUpAnimatorSet.setDuration(ANIMATION_DURATION);
-        mUpAnimatorSet.playTogether(objectAnimator, objectAnimator1, scaleIndication);
-
-
-        mUpAnimatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                freeFall();
-
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
         mUpAnimatorSet.start();
 
 
@@ -259,39 +256,39 @@ public class LoadingView extends FrameLayout {
      */
     public void freeFall() {
 
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mShapeLoadingView, "translationY", 0, mDistance);
-        ObjectAnimator scaleIndication = ObjectAnimator.ofFloat(mIndicationIm, "scaleX", 1, 0.2f);
+        if (mDownAnimatorSet == null) {
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mShapeLoadingView, "translationY", 0, mDistance);
+            ObjectAnimator scaleIndication = ObjectAnimator.ofFloat(mIndicationIm, "scaleX", 1, 0.2f);
 
+            objectAnimator.setDuration(ANIMATION_DURATION);
+            objectAnimator.setInterpolator(new AccelerateInterpolator(factor));
+            mDownAnimatorSet = new AnimatorSet();
+            mDownAnimatorSet.setDuration(ANIMATION_DURATION);
+            mDownAnimatorSet.playTogether(objectAnimator, scaleIndication);
+            mDownAnimatorSet.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
 
-        objectAnimator.setDuration(ANIMATION_DURATION);
-        objectAnimator.setInterpolator(new AccelerateInterpolator(factor));
-        mDownAnimatorSet = new AnimatorSet();
-        mDownAnimatorSet.setDuration(ANIMATION_DURATION);
-        mDownAnimatorSet.playTogether(objectAnimator, scaleIndication);
-        mDownAnimatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
+                }
 
-            }
+                @Override
+                public void onAnimationEnd(Animator animation) {
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
+                    mShapeLoadingView.changeShape();
+                    upThrow();
+                }
 
+                @Override
+                public void onAnimationCancel(Animator animation) {
 
-                mShapeLoadingView.changeShape();
-                upThrow();
-            }
+                }
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
+                @Override
+                public void onAnimationRepeat(Animator animation) {
 
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
+                }
+            });
+        }
         mDownAnimatorSet.start();
 
 
