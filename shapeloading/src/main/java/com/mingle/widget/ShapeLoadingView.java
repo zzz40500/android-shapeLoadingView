@@ -8,8 +8,6 @@ import android.graphics.Path;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.Interpolator;
 
 import com.mingle.shapeloading.R;
 import com.nineoldandroids.animation.ArgbEvaluator;
@@ -19,53 +17,52 @@ import com.nineoldandroids.animation.ArgbEvaluator;
  * Created by zzz40500 on 15/4/4.
  */
 public class ShapeLoadingView extends View {
-
-
+    /**
+     * 用赛贝尔曲线画圆
+     */
+    private static final float mMagicNumber = 0.55228475f;
     private static final float genhao3 = 1.7320508075689f;
     private static  final  float mTriangle2Circle =0.25555555f;
 
     private Shape mShape = Shape.SHAPE_CIRCLE;
-    private Interpolator mInterpolator=new DecelerateInterpolator();
+
     private ArgbEvaluator mArgbEvaluator=new ArgbEvaluator();
 
     private int mTriangleColor ;
     private int mCircleColor  ;
     private int mRectColor ;
 
-    /**
-     * 用赛贝尔曲线画圆
-     */
-    private float mMagicNumber = 0.55228475f;
 
     public ShapeLoadingView(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public ShapeLoadingView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
     public ShapeLoadingView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(context);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public ShapeLoadingView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init();
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
+        mTriangleColor = getColor(context, R.color.triangle);
+        mCircleColor =getColor(context, R.color.circle);
+        mRectColor = getColor(context, R.color.rect);
         mPaint = new Paint();
-        mPaint.setColor(getResources().getColor(R.color.triangle));
+        mPaint.setColor(mTriangleColor);
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        setBackgroundColor(getResources().getColor(R.color.view_bg));
-          mTriangleColor = getResources().getColor(R.color.triangle);
-          mCircleColor = getResources().getColor(R.color.circle);
-          mRectColor = getResources().getColor(R.color.triangle);
+
     }
 
     public boolean mIsLoading = false;
@@ -112,7 +109,7 @@ public class ShapeLoadingView extends View {
 
                 } else {
                     Path path = new Path();
-                    mPaint.setColor(getResources().getColor(R.color.triangle));
+                    mPaint.setColor(mTriangleColor);
                     path.moveTo(relativeXFromView(0.5f), relativeYFromView(0f));
                     path.lineTo(relativeXFromView(1), relativeYFromView(genhao3 / 2f));
                     path.lineTo(relativeXFromView(0), relativeYFromView(genhao3/2f));
@@ -162,7 +159,7 @@ public class ShapeLoadingView extends View {
                     invalidate();
                 } else {
 
-                    mPaint.setColor(getResources().getColor(R.color.circle));
+                    mPaint.setColor(mCircleColor);
                     Path path = new Path();
 
                     float magicNumber = mMagicNumber;
@@ -219,7 +216,7 @@ public class ShapeLoadingView extends View {
                     invalidate();
 
                 } else {
-                    mPaint.setColor(getResources().getColor(R.color.rect));
+                    mPaint.setColor(mRectColor);
                     mControlX = relativeXFromView(0.5f - genhao3 / 4);
                     mControlY = relativeYFromView(0.75f);
                     Path path = new Path();
@@ -253,8 +250,12 @@ public class ShapeLoadingView extends View {
 
     public void changeShape() {
         mIsLoading = true;
+        invalidate();
+    }
 
-
+    public void setShape(Shape shape){
+        mIsLoading = true;
+        mShape = shape;
         invalidate();
     }
 
@@ -274,5 +275,13 @@ public class ShapeLoadingView extends View {
 
     public Shape getShape() {
         return mShape;
+    }
+
+    private int getColor(Context context, int id) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return context.getColor(id);
+        } else {
+            return context.getResources().getColor(id);
+        }
     }
 }
